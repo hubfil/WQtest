@@ -4,6 +4,12 @@ using UnityEngine;
 
 public class MenuManager : MonoBehaviour
 {
+    public GameObject cameraMenu;
+    public GameObject cameraOptions;
+    public GameObject cameraGame;
+
+
+
 
     public static MenuManager instance = null; // Экземпляр объекта
 
@@ -31,6 +37,91 @@ public class MenuManager : MonoBehaviour
     // Метод инициализации менеджера
     private void InitializeManager()
     {
+        MenuB();
         /* TODO: Здесь мы будем проводить инициализацию */
+    }
+
+    public void ButtonPress(string input)
+    {
+        Debug.Log(input);
+        switch (input)
+        {
+
+            case "start":
+                startB();
+                break;
+
+            case "options":
+                OptionsB();
+                break;
+
+            case "exit":
+                Application.Quit();
+                break;
+
+            case "menu":
+                MenuB();
+                break;
+            
+
+            case "d1":
+                SetDifficulty(1);
+                break;
+
+            case "d2":
+                SetDifficulty(2);
+                break;
+
+            case "d3":
+                SetDifficulty(3);
+                break;
+
+            case "pause":
+                Pause();
+                break;
+                    
+
+            default:
+                break;
+        }
+    }
+
+
+    //я не извращенец, но хочу попробовать
+    void startB()
+    {
+        cameraGame.SetActive(true);
+        cameraMenu.SetActive(false);
+        cameraOptions.SetActive(false);
+
+    }
+
+    void OptionsB()
+    {
+        cameraGame.SetActive(false);
+        cameraMenu.SetActive(false);
+        cameraOptions.SetActive(true);
+
+    }
+
+    void MenuB()
+    {
+        cameraGame.SetActive(false);
+        cameraMenu.SetActive(true);
+        cameraOptions.SetActive(false);
+
+    }
+
+    //извращения закончены
+
+
+    void SetDifficulty(int diff)
+    {
+
+    }
+
+    void Pause()
+    {
+
     }
 }

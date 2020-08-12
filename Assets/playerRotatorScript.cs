@@ -21,7 +21,6 @@ public class playerRotatorScript : MonoBehaviour
     {
         if (other.gameObject.tag == "ball")
         {
-            Debug.Log("поворот");
             if (isLeft)
                 playerObj.transform.Rotate(0, 0, - rotateAmount );
             if (!isLeft)
@@ -32,7 +31,6 @@ public class playerRotatorScript : MonoBehaviour
     IEnumerator returnRotation()
     {
         yield return new WaitForSeconds(duration);
-        Debug.Log("возвращение");
         playerObj.transform.rotation = startRotation;
 
     }
