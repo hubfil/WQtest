@@ -63,7 +63,6 @@ public class MenuManager : MonoBehaviour
         InitializeManager();
 
         MenuB();
-        SoundManager.PlayMusic(menuMusic);
         resetPanelosition();
     }
 
@@ -114,7 +113,11 @@ public class MenuManager : MonoBehaviour
             case "pause":
                 Pause();
                 break;
-                    
+
+            case "pauseend":
+                PauseEnd();
+                break;
+
 
             default:
                 break;
@@ -129,8 +132,17 @@ public class MenuManager : MonoBehaviour
         cameraMenu.SetActive(false);
         cameraOptions.SetActive(false);
 
-        FindObjectOfType<BallScript>().StartBall(); //потом
+        
         SoundManager.PlayMusic(gameMusic);
+        StartCoroutine(waitAndGo());
+    }
+
+    IEnumerator waitAndGo()
+    {
+        yield return new WaitForSecondsRealtime(0.2f);
+        Debug.Log("Time.timeScale = 1");
+        FindObjectOfType<BallScript>().StartBall(); //потом
+        Time.timeScale = 1;
     }
 
     void OptionsB()
@@ -143,6 +155,8 @@ public class MenuManager : MonoBehaviour
 
     void MenuB()
     {
+        SoundManager.PlayMusic(menuMusic);
+        Time.timeScale = 0;
         cameraGame.SetActive(false);
         cameraMenu.SetActive(true);
         cameraOptions.SetActive(false);
@@ -157,19 +171,45 @@ public class MenuManager : MonoBehaviour
 
     }
 
-    void Pause()
+    public static void Pause()
     {
-
+        instance.pauseMenu.SetActive(true);
+        Time.timeScale = 0;
+        SoundManager.StopAllPausableSounds();
     }
+    public static void PauseEnd()
+    {
+        instance.pauseMenu.SetActive(false);
+        instance.LoseMenu.SetActive(false);
+        instance.WinMenu.SetActive(false);
+
+        SoundManager.UnPause();
+        Time.timeScale = 1;
+    }
+
+
 
 
     public static void ShowLosePanel()
     {
+        instance.ShowLosePanel1();
+    }
+
+    private void ShowLosePanel1()
+    {
+        LoseMenu.SetActive(true);
+        Time.timeScale = 0;
 
     }
 
     public static void showWinPanel()
     {
+        instance.showWinPanel1();
+    }
+    private void showWinPanel1()
+    {
+        WinMenu.SetActive(true);
+        Time.timeScale = 0;
 
     }
 }

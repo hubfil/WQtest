@@ -10,7 +10,7 @@ public class scoreManager : MonoBehaviour
     private static int score;
     private static int maxScore;
 
-    
+
 
     public static scoreManager instance = null;
 
@@ -23,6 +23,9 @@ public class scoreManager : MonoBehaviour
     public GameObject[] hearts = new GameObject[3];
     private static Text scoreText;
     public Text scoreWinText, scoreLooseText;
+
+
+    public GameObject bricksPrefab, bricks;
 
 
     void Awake()
@@ -57,8 +60,9 @@ public class scoreManager : MonoBehaviour
 
     public void GiveHealth()
     {
-        //    3    >    3
-        if (health > hearts.Length)
+        Debug.Log("GiveHealth");
+        //    0    >    1
+        if ( health < 3)
         {
             hearts[health].SetActive(true);
             health++;
@@ -67,11 +71,11 @@ public class scoreManager : MonoBehaviour
             Debug.Log("max health");
     }
 
-    public void LooseHealth ()
+    public void LooseHealth()
     {
         Debug.Log("LooseHealth");
         //    3    <    3
-        if (health <= hearts.Length)
+        if (health > 0 && (health == 3 ||  health < hearts.Length))
         {
             Debug.Log("LooseHealth" + health);
             health--;
@@ -96,6 +100,15 @@ public class scoreManager : MonoBehaviour
             Debug.Log("win");
             MenuManager.showWinPanel();
         }
+        instance.syncScoreText();
+    }
+
+    private void syncScoreText()
+    {
+        scoreWinText.text = "score " + score;
+        scoreLooseText.text = "score " + score;
+
+        
     }
 
     public static void resetScore()
@@ -107,8 +120,35 @@ public class scoreManager : MonoBehaviour
 
     public void RestartGo()
     {
+        score = 0;
+        GiveHealth(); GiveHealth();
+        GiveHealth();
+        GiveHealth();
+
+
         ballObj.transform.position = ballStartPosition;
         ballObj.GetComponent<BallScript>().StartBall();
-        SoundManager.PlaySound("boom7").SetVolume(0.1f);
+        SoundManager.PlaySound("phaserUp1").SetVolume(2.1f);
+
+        #region bricks management
+
+        Transform bricksPos = bricks.transform;
+        for (int i = 0; i < bricks.transform.childCount; i++)
+            Destroy(bricks.transform.GetChild(i).gameObject);
+        GameObject newBricks = Instantiate(bricksPrefab, bricks.transform);
+        for (int i = 0; i < newBricks.transform.childCount; i++)
+            newBricks.transform.GetChild(i).transform.parent = bricks.transform;
+
+        #endregion
+
+        MenuManager.PauseEnd();
+    }
+
+    public void PayedOption()
+    {
+        GiveHealth();
+        AdManager.whatchYoutube();
+        MenuManager.PauseEnd();
+        MenuManager.Pause();
     }
 }
