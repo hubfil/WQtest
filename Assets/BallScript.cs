@@ -24,6 +24,7 @@ public class BallScript : MonoBehaviour
 
     public void StartBall()
     {
+        transform.position = startPosition;
         Debug.Log(gameObject.name + " запущен");
         rb.isKinematic = true;
         rb.velocity = (startForceV3 * startForce);
@@ -64,6 +65,7 @@ public class BallScript : MonoBehaviour
     {
         if (collision.transform.tag == "brick")
         {
+            scoreManager.AddScore();
             Destroy(collision.gameObject, 0.1f);
             SoundManager.PlaySound("boom2").SetVolume(0.5f);
             SoundManager.PlaySoundWithDelay("boom1", 0.1f);
@@ -74,6 +76,12 @@ public class BallScript : MonoBehaviour
 
             timeToReturn = 0;
             rb.useGravity = false;
+        }
+
+        else if (collision.gameObject.name == "BottomCube")
+        {
+            scoreManager.staticLooseHealth();
+            StartBall();
         }
         else
         {

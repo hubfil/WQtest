@@ -8,8 +8,35 @@ public class MenuManager : MonoBehaviour
     public GameObject cameraOptions;
     public GameObject cameraGame;
 
-    public string menuMusic, gameMusic;
+    //еще
+    public GameObject pauseMenu, WinMenu, LoseMenu;
 
+    private void resetPanelosition()
+    {
+        cameraMenu.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
+        cameraOptions.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
+        cameraGame.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
+        pauseMenu.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
+        WinMenu.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
+        LoseMenu.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
+        pauseMenu.SetActive(false);
+        WinMenu.SetActive(false);
+        LoseMenu.SetActive(false);
+
+    }
+
+    public GameObject mSlider1, mSlider2;
+    public string menuMusic, gameMusic;
+    
+    private void musicSliderSet()
+    {
+        mSlider1.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
+        mSlider2.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
+
+        mSlider1.GetComponent<UnityEngine.UI.Slider>().value = SoundManager.GetMusicVolume();
+        mSlider2.GetComponent<UnityEngine.UI.Slider>().value = SoundManager.GetMusicVolume();
+
+    }
 
 
 
@@ -37,6 +64,7 @@ public class MenuManager : MonoBehaviour
 
         MenuB();
         SoundManager.PlayMusic(menuMusic);
+        resetPanelosition();
     }
 
     // Метод инициализации менеджера
@@ -102,6 +130,7 @@ public class MenuManager : MonoBehaviour
         cameraOptions.SetActive(false);
 
         FindObjectOfType<BallScript>().StartBall(); //потом
+        SoundManager.PlayMusic(gameMusic);
     }
 
     void OptionsB()
@@ -129,6 +158,17 @@ public class MenuManager : MonoBehaviour
     }
 
     void Pause()
+    {
+
+    }
+
+
+    public static void ShowLosePanel()
+    {
+
+    }
+
+    public static void showWinPanel()
     {
 
     }
