@@ -21,10 +21,11 @@ public class playerRotatorScript : MonoBehaviour
     {
         if (other.gameObject.tag == "ball")
         {
+            float randomAmount = rotateAmount * Random.Range(0f, 1f);
             if (isLeft)
-                playerObj.transform.Rotate(0, 0, - rotateAmount );
+                playerObj.transform.Rotate(0, 0, -randomAmount);
             if (!isLeft)
-                playerObj.transform.Rotate(0, 0, rotateAmount);
+                playerObj.transform.Rotate(0, 0, randomAmount);
             StartCoroutine(returnRotation());
         }
     }

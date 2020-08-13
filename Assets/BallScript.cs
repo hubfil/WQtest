@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class BallScript : MonoBehaviour
 {
+    public bool isStarted = false;
 
     public Vector3 startPosition;
     public Vector3 startForceV3;
@@ -15,10 +16,10 @@ public class BallScript : MonoBehaviour
     public float timeToReturnMax;
 
 
+
     void Start()
     {
         startPosition = transform.position;
-        StartBall();
     }
 
     public void StartBall()
@@ -27,20 +28,28 @@ public class BallScript : MonoBehaviour
         rb.isKinematic = true;
         rb.velocity = (startForceV3 * startForce);
         rb.isKinematic = false;
-
+        SoundManager.PlaySound("boom4").SetVolume(0.8f);
+        isStarted = true;
     }
 
     public void FixedUpdate()
     {
+        if (isStarted)
         UdjustSpeed();
     }
 
     private void Update()
     {
-        //защита от застреваний
-        timeToReturn += Time.deltaTime;
-        if (timeToReturn > timeToReturnMax)
-            rb.useGravity = true;
+        if (isStarted)
+        {
+            //защита от застреваний
+            timeToReturn += Time.deltaTime;
+            if (timeToReturn > timeToReturnMax)
+            {
+                rb.useGravity = true;
+            }
+
+        }
     }
 
     public void UdjustSpeed()
@@ -56,14 +65,22 @@ public class BallScript : MonoBehaviour
         if (collision.transform.tag == "brick")
         {
             Destroy(collision.gameObject, 0.1f);
+            SoundManager.PlaySound("boom2").SetVolume(0.5f);
+            SoundManager.PlaySoundWithDelay("boom1", 0.1f);
         }
-        if (collision.transform.tag == "player")
+        else if (collision.transform.tag == "player")
         {
+            SoundManager.PlaySound("boom3").SetVolume(0.8f);
+
             timeToReturn = 0;
             rb.useGravity = false;
         }
-
+        else
+        {
+            SoundManager.PlaySound("boom7").SetVolume(0.1f);
 
         }
+
+    }
 
     }

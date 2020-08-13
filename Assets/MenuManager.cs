@@ -8,6 +8,8 @@ public class MenuManager : MonoBehaviour
     public GameObject cameraOptions;
     public GameObject cameraGame;
 
+    public string menuMusic, gameMusic;
+
 
 
 
@@ -32,17 +34,22 @@ public class MenuManager : MonoBehaviour
 
         // И запускаем собственно инициализатор
         InitializeManager();
+
+        MenuB();
+        SoundManager.PlayMusic(menuMusic);
     }
 
     // Метод инициализации менеджера
     private void InitializeManager()
     {
-        MenuB();
+        
+
         /* TODO: Здесь мы будем проводить инициализацию */
     }
 
     public void ButtonPress(string input)
     {
+        SoundManager.PlaySoundUI("click1");
         Debug.Log(input);
         switch (input)
         {
@@ -94,6 +101,7 @@ public class MenuManager : MonoBehaviour
         cameraMenu.SetActive(false);
         cameraOptions.SetActive(false);
 
+        FindObjectOfType<BallScript>().StartBall(); //потом
     }
 
     void OptionsB()

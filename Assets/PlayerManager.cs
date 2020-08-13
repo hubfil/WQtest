@@ -49,7 +49,7 @@ public class PlayerManager : MonoBehaviour
         {
             float currPos = Input.mousePosition.x;
             float deltaY = oldMousePos - currPos;
-            Debug.Log(deltaY);
+            //Debug.Log(deltaY);
             playerObj.transform.position = playerObj.transform.position +
                 new Vector3(deltaY * sensiv, 0, 0);
             if (playerObj.transform.position.x > playerPosMax)
