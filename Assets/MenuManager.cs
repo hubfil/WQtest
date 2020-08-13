@@ -62,6 +62,7 @@ public class MenuManager : MonoBehaviour
         // И запускаем собственно инициализатор
         InitializeManager();
 
+        SetDifficulty(1);
         MenuB();
         resetPanelosition();
     }
@@ -134,6 +135,7 @@ public class MenuManager : MonoBehaviour
 
         
         SoundManager.PlayMusic(gameMusic);
+        scoreManager.allRestart();
         StartCoroutine(waitAndGo());
     }
 
@@ -168,7 +170,7 @@ public class MenuManager : MonoBehaviour
 
     void SetDifficulty(int diff)
     {
-
+        DifficaltyManager.dSet(diff);
     }
 
     public static void Pause()

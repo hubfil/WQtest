@@ -8,7 +8,7 @@ public class scoreManager : MonoBehaviour
 {
 
     private static int score;
-    private static int maxScore;
+    public  int maxScore;
 
 
 
@@ -95,12 +95,20 @@ public class scoreManager : MonoBehaviour
     {
         score++;
         scoreText.text = score.ToString();
-        if (score == maxScore)
+        if (score % instance.maxScore == 0)
         {
             Debug.Log("win");
-            MenuManager.showWinPanel();
+            instance.StartCoroutine(instance.ShowWin());
         }
         instance.syncScoreText();
+    }
+
+    IEnumerator ShowWin()
+    {
+        yield return new WaitForSecondsRealtime(0.2f);
+
+        MenuManager.showWinPanel();
+
     }
 
     private void syncScoreText()
@@ -117,6 +125,11 @@ public class scoreManager : MonoBehaviour
         scoreText.text = score.ToString();
     }
     #endregion
+
+    public static void allRestart()
+    {
+        instance.RestartGo();
+    }
 
     public void RestartGo()
     {
@@ -151,4 +164,31 @@ public class scoreManager : MonoBehaviour
         MenuManager.PauseEnd();
         MenuManager.Pause();
     }
+
+
+
+    public void nextLevel()
+    {
+        //score = 0;
+        GiveHealth();
+
+
+        ballObj.transform.position = ballStartPosition;
+        ballObj.GetComponent<BallScript>().StartBall();
+        SoundManager.PlaySound("phaserUp1").SetVolume(2.1f);
+
+        #region bricks management
+
+        Transform bricksPos = bricks.transform;
+        for (int i = 0; i < bricks.transform.childCount; i++)
+            Destroy(bricks.transform.GetChild(i).gameObject);
+        GameObject newBricks = Instantiate(bricksPrefab, bricks.transform);
+        for (int i = 0; i < newBricks.transform.childCount; i++)
+            newBricks.transform.GetChild(i).transform.parent = bricks.transform;
+
+        #endregion
+
+        MenuManager.PauseEnd();
+    }
+
 }
